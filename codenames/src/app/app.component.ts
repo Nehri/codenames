@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Card, CardType } from './types';
-import { WORDS } from 'words';
+import { WORDS } from './words';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +13,6 @@ export class AppComponent {
     word: "Word",
     type: CardType.TEAM_BLUE,
   };
-<<<<<<< HEAD
   cards: Card[][];
 
   constructor() {
@@ -34,11 +33,11 @@ export class AppComponent {
       }
       cardArray.push(cardRow);
     }
+
+    return cardArray;
   }
 
   private getRandomWordIndex() {
-    return Math.random() * WORDS.length;
+    return Math.floor(Math.random() * WORDS.length);
   }
-=======
->>>>>>> c6bb969 (adding game component nd route)
 }
