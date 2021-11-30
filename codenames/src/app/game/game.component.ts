@@ -11,18 +11,12 @@ import { WORDS } from '../words';
   styleUrls: ['./game.component.css']
 })
 export class GameComponent implements OnInit {
-  gameId: Observable<string>;
+  gameId: string;
   cards: Card[][];
 
   constructor(private route: ActivatedRoute,) { 
     this.cards = this.generateCards();
-
-    console.log('in constructor');
-    this.gameId = this.route.paramMap.pipe(params => {
-      console.log(params);
-      console.log(params['gameId']);
-      return params['gameId'];
-    });
+    this.gameId = this.route.snapshot.paramMap.get('gameId');
   }
 
   ngOnInit(): void {
