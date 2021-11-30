@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Card, CardType } from 'types';
+import { Card, CardType } from './types';
 
 @Component({
   selector: 'app-root',
@@ -8,4 +8,8 @@ import { Card, CardType } from 'types';
 })
 export class AppComponent {
   title = 'codenames';
+  card = {
+    word: "Word",
+    type: CardType.DEATH,
+  }
 }

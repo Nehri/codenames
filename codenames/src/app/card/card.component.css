@@ -1,0 +1,33 @@
+.card {
+    height: 100px;
+    line-height:100px;
+    width: 200px;
+    border-width: 2px;
+    border-color: black;
+    border-style: solid;
+    text-align:center;
+    font-weight: bold;
+    font-size:36px;
+    border-radius:15px;
+}
+
+.card-DEATH {
+    color:white;
+    background-color:black;
+}
+
+.card-TEAM_RED {
+    background-color:#ff8080;
+}
+
+.card-TEAM_BLUE {
+    background-color:#66a3ff;
+}
+
+.card-UNKNOWN {
+    background-color: #d9d9d9;
+}
+
+.card-NEUTRAL {
+    background-color: #D2B48C;
+}
