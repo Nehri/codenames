@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "y-codenames": {
+      "hosting": {
+        "codenames": [
+          "y-codenames"
+        ]
+      }
+    }
+  }
+}
