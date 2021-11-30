@@ -1,0 +1,1 @@
+export WORDS = ['doogler', 'cafe', 'free food', 'swag', 're-org',];
