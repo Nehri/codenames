@@ -16,28 +16,5 @@ export class AppComponent {
   cards: Card[][];
 
   constructor() {
-    this.cards = this.generateCards();
-  }
-
-  private generateCards(): Card[][] {
-    const cardArray: Card[][] = [];
-    const cardIndexSet = new Set();
-    for (let i = 0; i < 5; i++) {
-      let cardRow: Card[] = [];
-      for (let j = 0; j < 5; j++) {
-        let cardIndex = this.getRandomWordIndex();
-        while (cardIndexSet.has(cardIndex)) cardIndex = this.getRandomWordIndex();
-
-        cardRow.push({word: WORDS[cardIndex], type: CardType.UNKNOWN});
-        cardIndexSet.add(cardIndex);
-      }
-      cardArray.push(cardRow);
-    }
-
-    return cardArray;
-  }
-
-  private getRandomWordIndex() {
-    return Math.floor(Math.random() * WORDS.length);
   }
 }
