@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Card, CardType } from './types';
 import { WORDS } from './words';
+import * as uuid from 'uuid';
+import { Router } from '@angular/router'; 
 
 @Component({
   selector: 'app-root',
@@ -15,6 +17,11 @@ export class AppComponent {
   };
   cards: Card[][];
 
-  constructor() {
+  constructor(private router: Router ) {
+  }
+
+  startNewGame(){
+    const gameId = uuid.v4();
+    this.router.navigate([`/games/${gameId}`]);
   }
 }
