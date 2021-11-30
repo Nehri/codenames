@@ -20,6 +20,8 @@ export class GameComponent implements OnInit {
     this.cards = this.generateCards();
     this.types = this.generateTypes();
     this.gameId = this.route.snapshot.paramMap.get('gameId');
+    const game = db.object(this.gameId);
+    game.set({cards: this.cards, types: this.types});
 
     console.log('in constructor');
   }
