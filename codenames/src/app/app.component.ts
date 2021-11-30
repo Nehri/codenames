@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Card, CardType } from './types';
+import { WORDS } from 'words';
 
 @Component({
   selector: 'app-root',
@@ -12,37 +13,29 @@ export class AppComponent {
     word: "Word",
     type: CardType.TEAM_BLUE,
   };
+  cards: Card[][];
 
-  cards = [
-    [{
-      word: "Cafe",
-      type: CardType.UNKNOWN,
-    },{
-      word: "Google",
-      type: CardType.UNKNOWN,
-    },{
-      word: "Doogler",
-      type: CardType.TEAM_BLUE,
-    }],
-    [{
-      word: "5BB",
-      type: CardType.UNKNOWN,
-    },{
-      word: "Pano",
-      type: CardType.TEAM_RED,
-    },{
-      word: "Chat app",
-      type: CardType.NEUTRAL,
-    }],
-    [{
-      word: "Button wall",
-      type: CardType.NEUTRAL,
-    },{
-      word: "Reorg",
-      type: CardType.DEATH,
-    },{
-      word: "Kudos",
-      type: CardType.TEAM_BLUE,
-    }],
-  ]
+  constructor() {
+    this.cards = this.generateCards();
+  }
+
+  private generateCards(): Card[][] {
+    const cardArray: Card[][] = [];
+    const cardIndexSet = new Set();
+    for (let i = 0; i < 5; i++) {
+      let cardRow: Card[] = [];
+      for (let j = 0; j < 5; j++) {
+        let cardIndex = this.getRandomWordIndex();
+        while (cardIndexSet.has(cardIndex)) cardIndex = this.getRandomWordIndex();
+
+        cardRow.push({word: WORDS[cardIndex], type: CardType.UNKNOWN});
+        cardIndexSet.add(cardIndex);
+      }
+      cardArray.push(cardRow);
+    }
+  }
+
+  private getRandomWordIndex() {
+    return Math.random() * WORDS.length;
+  }
 }
