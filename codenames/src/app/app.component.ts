@@ -13,6 +13,7 @@ export class AppComponent {
     word: "Word",
     type: CardType.TEAM_BLUE,
   };
+<<<<<<< HEAD
   cards: Card[][];
 
   constructor() {
@@ -38,4 +39,6 @@ export class AppComponent {
   private getRandomWordIndex() {
     return Math.random() * WORDS.length;
   }
+=======
+>>>>>>> c6bb969 (adding game component nd route)
 }
