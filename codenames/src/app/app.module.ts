@@ -9,18 +9,22 @@ import { environment } from 'src/environments/environment';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { CardComponent } from './card/card.component';
 import { BoardComponent } from './board/board.component';
+import { SigninComponent } from './signin/signin.component';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 
 @NgModule({
   declarations: [
     AppComponent,
     CardComponent,
-    BoardComponent
+    BoardComponent,
+    SigninComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireAuthModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
