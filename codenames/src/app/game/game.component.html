@@ -22,6 +22,12 @@
       </form>
 </div>
 
+<ol>
+    <li *ngFor="let clue of (clues | async)">
+        {{clue.word}}: {{clue.number}}
+    </li>
+</ol>
+
 
 <ng-template #becomeCodemaster>
     <button (click)="becomeCodeMaster()">Become codemaster</button>
