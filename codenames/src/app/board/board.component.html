@@ -1,4 +1,4 @@
-<div *ngFor="let row of cards" class="row">
-    <card *ngFor="let card of row" [card]="card">
+<div *ngFor="let row of cards; let rowIndex = index" class="row">
+    <card *ngFor="let card of row; let colIndex = index" [card]="card" (click)="emitCardClicked(rowIndex, colIndex)">
     </card>
 </div>

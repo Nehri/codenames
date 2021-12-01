@@ -11,6 +11,7 @@ export const WORDS = [
 	'sundar',
 	'scooter',
 	'microkitchen',
+	'ped',
 	// Google NYC words
 	'pano',
 	'5bb',
