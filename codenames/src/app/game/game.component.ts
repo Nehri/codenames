@@ -13,14 +13,13 @@ import { AngularFireDatabase } from '@angular/fire/database';
 })
 export class GameComponent implements OnInit {
   gameId: string;
+  game: any;
   cards: Card[][];
   // types: Promise<CardType[]>;
 
   constructor(private route: ActivatedRoute, private db: AngularFireDatabase) { 
     this.gameId = this.route.snapshot.paramMap.get('gameId');
-    // const game = this.db.object(`games/${this.gameId}`);
-    // this.cards = game.query.get().then(snapshot => snapshot['cards']);
-    console.log('in constructor');
+    this.game = this.db.object(`games/${this.gameId}`).valueChanges();
   }
 
   ngOnInit(): void {

@@ -1,2 +1,2 @@
 <p>game id {{gameId}}</p>
-<board [cards]="cards | async"></board>
+<board [cards]="(game | async).cards"></board>
