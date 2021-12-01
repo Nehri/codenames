@@ -1,1 +1,9 @@
-<p>game-list works!</p>
+<div *ngIf="(gameList | async) as gameList">
+		<li *ngFor="let game in gameList">
+			<div>
+				<span>
+					{{game}}
+				</span>
+			</div>
+	    </li>
+</div>

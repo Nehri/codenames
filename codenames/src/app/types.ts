@@ -15,6 +15,12 @@ export interface Card{
 	type: CardType;
 }
 
+export enum GameState {
+	CREATED = 'CREATED',
+	STARTED = 'STARTED',
+	ENDED = 'ENDED',
+}
+
 // enum Team: 'TEAM_A'|'TEAM_B';
 
 // export interface State{

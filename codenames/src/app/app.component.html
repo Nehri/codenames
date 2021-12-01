@@ -2,7 +2,7 @@
 <app-signin *ngIf="!(user | async); else gameState"></app-signin>
 
 <ng-template #gameState>
-  <button (click)="startNewGame(user.uid)">
+  <button (click)="createNewGame(user.uid)">
     Create new game
   </button>
 

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Card, CardType } from './types';
+import { Card, CardType, GameState } from './types';
 import { WORDS } from './words';
 import * as uuid from 'uuid';
 import { Router } from '@angular/router'; 
@@ -30,7 +30,7 @@ export class AppComponent {
     const types = this.generateTypes();
     const gameId = uuid.v4();
     const game = this.db.object(`games/${gameId}`);
-    game.set({cards, types});
+    game.set({cards, types, gameState: GameState.CREATED});
     this.router.navigate([`/games/${gameId}`]);
   }
 
