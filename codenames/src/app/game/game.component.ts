@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Card, CardType } from '../types';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable } from 'rxjs';
+import { first } from 'rxjs/operators';
+
 import { WORDS } from '../words';
 import { AngularFireDatabase } from '@angular/fire/database';
 
@@ -14,24 +16,27 @@ import { AngularFireDatabase } from '@angular/fire/database';
 export class GameComponent implements OnInit {
   gameId: string;
   game: any;
-  cards: Card[][];
+  cards: any;
+  // types: Promise<CardType[]>;
 
   constructor(private route: ActivatedRoute, private db: AngularFireDatabase) { 
     this.gameId = this.route.snapshot.paramMap.get('gameId');
-    this.game = this.db.object(`games/${this.gameId}`).valueChanges();
+    this.cards = this.db.object(`games/${this.gameId}/cards`).valueChanges();
   }
 
   ngOnInit(): void {
   }
 
-  flipCard({row, col}, game) {
-    const cards = game.cards;
+  flipCard({row, col}, cards) {
     const cardToFlip = cards[row][col];
-    const cardType = game.types[(row*5) + col];
-
-    if (cardToFlip && cardType && cardToFlip.type === CardType.UNKNOWN) {
-      cards[row][col].type = game.types[(row*5) + col];
-      this.db.object(`games/${this.gameId}`).update({cards});
-    }
+    const cardIndex = (row*5) + col;
+    this.db.object(`games/${this.gameId}/types/${cardIndex}`).valueChanges().pipe(
+      first()
+      ).subscribe(cardType => {
+      if (cardToFlip && cardType && cardToFlip.type === CardType.UNKNOWN) {
+        cards[row][col].type = cardType;
+        this.db.object(`games/${this.gameId}`).update({cards});
+      }
+    });
   }
 }
