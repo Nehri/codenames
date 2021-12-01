@@ -93,7 +93,11 @@ export class AppComponent {
     }
 
      this.shuffleArray(types);
-     return types;
+    
+     const typesArr = [];
+     while(types.length) typesArr.push(types.splice(0,5));
+
+     return typesArr;
   }
 
   private shuffleArray(array): void {

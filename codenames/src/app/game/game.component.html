@@ -1,2 +1,8 @@
 <p>game id {{gameId}}</p>
+<button (click)="becomePlayer()" *ngIf="(isCodeMaster | async); else becomeCodemaster">Become player</button>
+<ng-template #becomeCodemaster>
+    <button (click)="becomeCodeMaster()">Become codemaster</button>
+</ng-template>
+
 <board  *ngIf="(cards | async) as cards" [cards]="cards" (cardClicked)="flipCard($event, cards)"></board>
+
