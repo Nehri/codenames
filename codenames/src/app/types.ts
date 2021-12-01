@@ -10,6 +10,16 @@ export enum CardType{
 	NEUTRAL = 'NEUTRAL',
 	UNKNOWN = 'UNKNOWN',
 } 
+export enum Team {
+	TEAM_RED = 'TEAM_RED',
+	TEAM_BLUE = 'TEAM_BLUE',
+}
+
+export enum TurnPhase {
+	CLUE_GIVING = 'CLUE_GIVING',
+	GUESSING = 'GUESSING',
+}
+
 export interface Card{
 	word: string;
 	type: CardType;

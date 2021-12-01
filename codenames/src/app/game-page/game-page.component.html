@@ -1,4 +1,7 @@
 <p>game id {{gameId}}</p>
+<p>Team turn: {{teamTurn | async}}</p>
+<p>Turn phase: {{turnPhase | async}}</p>
+<p>Guesses remaining: {{guessesRemaining | async}}</p>
 <div *ngIf="(isCodeMaster | async); else becomeCodemaster">
     <button (click)="becomePlayer()">Become player</button>
     <form [formGroup]="clueForm" (ngSubmit)="onSubmit()">
@@ -17,7 +20,7 @@
             <input id="number" type="number" formControlName="number">
           </div>
     
-        <button class="button" type="submit">Submit Clue</button>
+        <button class="button" type="submit" [disabled]="(canNotGiveClues | async)">Submit Clue</button>
       
       </form>
 </div>
@@ -35,5 +38,9 @@
 
 
 
-<board  *ngIf="(cards | async) as cards" [cards]="cards" (cardClicked)="flipCard($event, cards)"></board>
+<board  *ngIf="(cards | async) as cards" 
+  [cards]="cards" 
+  [clickingEnabled]="canClickCards | async"
+  (cardClicked)="flipCard($event, cards)">
+</board>
 

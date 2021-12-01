@@ -10,6 +10,9 @@ export class BoardComponent implements OnInit {
   @Input()
   cards: Card[][];
 
+  @Input()
+  clickingEnabled: boolean;
+
   @Output()
   cardClicked = new EventEmitter<{row: number, col: number}>();
 
@@ -19,7 +22,9 @@ export class BoardComponent implements OnInit {
   }
 
   emitCardClicked(rowIndex: number, colIndex: number): void {
-    this.cardClicked.emit({row: rowIndex, col: colIndex})
-    console.log('card clicked at ' + rowIndex + ', ' + colIndex);
+    if(this.clickingEnabled){
+      this.cardClicked.emit({row: rowIndex, col: colIndex})
+      console.log('card clicked at ' + rowIndex + ', ' + colIndex);
+    }
   }
 }

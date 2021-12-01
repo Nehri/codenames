@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Card, CardType, GameState } from './types';
+import { Card, CardType, Team, TurnPhase, GameState } from './types';
 import { WORDS } from './words';
 import * as uuid from 'uuid';
 import { Router } from '@angular/router'; 
@@ -27,10 +27,20 @@ export class AppComponent {
 
   createNewGame(userId: string){
     const cards = this.generateCards();
-    const types = this.generateTypes();
+    const firstTeam = this.generateFirstTeam();
+    const types = this.generateTypes(firstTeam);
     const gameId = uuid.v4();
     const game = this.db.object(`games/${gameId}`);
-    game.set({cards, types, gameState: GameState.CREATED});
+    game.set({
+      cards, 
+      types,
+      gameState: GameState.CREATED,
+      currentTurn: {
+        team: firstTeam,
+        phase: TurnPhase.CLUE_GIVING,
+        guessesRemaining: 0
+      },
+    });
     this.router.navigate([`/games/${gameId}`]);
   }
 
@@ -57,7 +67,11 @@ export class AppComponent {
     return Math.floor(Math.random() * WORDS.length);
   }
 
-  private generateTypes(): CardType[] {
+  private generateFirstTeam(): Team{
+    return Math.round(Math.random()) === 0 ?  Team.TEAM_BLUE :  Team.TEAM_RED;
+  }
+
+  private generateTypes(firstTeam: Team): CardType[] {
     const types = [
       CardType.TEAM_BLUE,
       CardType.TEAM_BLUE,
@@ -83,10 +97,8 @@ export class AppComponent {
       CardType.NEUTRAL,
       CardType.NEUTRAL,
       CardType.DEATH,
-    ];
-    const blueTeamHasExtraCard = Math.round(Math.random()) === 0;
-    
-    if (blueTeamHasExtraCard) {
+    ];    
+    if (firstTeam === Team.TEAM_BLUE) {
       types.push(CardType.TEAM_BLUE);
     } else {
       types.push(CardType.TEAM_RED);
