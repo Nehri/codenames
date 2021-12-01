@@ -25,7 +25,7 @@ export class AppComponent {
     this.user = afAuth.authState;
   }
 
-  startNewGame(userId: string){
+  createNewGame(userId: string){
     const cards = this.generateCards();
     const types = this.generateTypes();
     const gameId = uuid.v4();

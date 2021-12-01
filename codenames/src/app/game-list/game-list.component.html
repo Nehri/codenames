@@ -1,3 +1,6 @@
+<button (click)="createNewGame(user.uid)">
+	Create new game
+</button>
 <div *ngIf="(gameList | async) as gameList">
 	<div *ngFor="let game of (gameIds | async)">
 		<div>
