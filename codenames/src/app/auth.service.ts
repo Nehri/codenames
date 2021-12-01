@@ -16,9 +16,9 @@ export class AuthService {
   AuthLogin(provider) {
      return this.afAuth.signInWithPopup(provider)
      .then((result) => {
-       console.log('Success');
+       console.log('Log in success');
      }).catch((error) => {
-       console.log('Error');
+       console.log('Log in error');
      })
   }
 }

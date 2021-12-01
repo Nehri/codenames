@@ -4,7 +4,9 @@ import { WORDS } from './words';
 import * as uuid from 'uuid';
 import { Router } from '@angular/router'; 
 import { AngularFireDatabase } from '@angular/fire/database';
-
+import { AngularFireAuth } from '@angular/fire/auth';
+import * as firebase from 'firebase/app';
+import { Observable } from 'rxjs'; 
 
 @Component({
   selector: 'app-root',
@@ -12,17 +14,18 @@ import { AngularFireDatabase } from '@angular/fire/database';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'codenames';
   card = {
     word: "Word",
     type: CardType.TEAM_BLUE,
   };
   cards: Card[][];
+  user: Observable<any>;
 
-  constructor(private router: Router,  private db: AngularFireDatabase ) {
+  constructor(private router: Router,  private db: AngularFireDatabase, private afAuth: AngularFireAuth) {
+    this.user = afAuth.authState;
   }
 
-  startNewGame(){
+  startNewGame(userId: string){
     const cards = this.generateCards();
     const types = this.generateTypes();
     const gameId = uuid.v4();

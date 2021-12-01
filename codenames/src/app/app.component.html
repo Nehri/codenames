@@ -1,8 +1,9 @@
-<span>Googley Codenames</span>
-<app-signin></app-signin>
-<board [cards]="cards"></board>
+<h1>Googley Codenames</h1>
+<app-signin *ngIf="!(user | async); else gameBoard"></app-signin>
 
-<button (click)="startNewGame()">
+<ng-template #gameBoard>
+  <button (click)="startNewGame(user.uid)">
     Start new game
-</button>
+  </button>
+</ng-template>
 <router-outlet></router-outlet>

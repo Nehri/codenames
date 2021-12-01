@@ -15,7 +15,6 @@ export class GameComponent implements OnInit {
   gameId: string;
   game: any;
   cards: Card[][];
-  // types: Promise<CardType[]>;
 
   constructor(private route: ActivatedRoute, private db: AngularFireDatabase) { 
     this.gameId = this.route.snapshot.paramMap.get('gameId');
