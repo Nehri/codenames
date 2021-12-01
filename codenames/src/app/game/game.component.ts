@@ -25,4 +25,14 @@ export class GameComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  flipCard({row, col}, game) {
+    const cards = game.cards;
+    const cardToFlip = cards[row][col];
+    const cardType = game.types[(row*5) + col];
+
+    if (cardToFlip && cardType && cardToFlip.type === CardType.UNKNOWN) {
+      cards[row][col].type = game.types[(row*5) + col];
+      this.db.object(`games/${this.gameId}`).update({cards});
+    }
+  }
 }

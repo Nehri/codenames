@@ -1,2 +1,2 @@
 <p>game id {{gameId}}</p>
-<board [cards]="(game | async).cards"></board>
+<board *ngIf="(game | async) as game" [cards]="game.cards" (cardClicked)="flipCard($event, game)"></board>
