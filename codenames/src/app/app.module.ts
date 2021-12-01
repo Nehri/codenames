@@ -11,8 +11,9 @@ import { CardComponent } from './card/card.component';
 import { BoardComponent } from './board/board.component';
 import { SigninComponent } from './signin/signin.component';
 import { AngularFireAuthModule } from '@angular/fire/auth';
-import { GameComponent } from './game/game.component';
+import { GamePageComponent } from './game-page/game-page.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { GameListComponent } from './game-list/game-list.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     CardComponent,
     BoardComponent,
     SigninComponent,
-    GameComponent
+    GamePageComponent,
+    GameListComponent
   ],
   imports: [
     BrowserModule,

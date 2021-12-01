@@ -12,10 +12,10 @@ import { AngularFireDatabase } from '@angular/fire/database';
 
 @Component({
   selector: 'app-game',
-  templateUrl: './game.component.html',
-  styleUrls: ['./game.component.css']
+  templateUrl: './game-page.component.html',
+  styleUrls: ['./game-page.component.css']
 })
-export class GameComponent implements OnInit {
+export class GamePageComponent implements OnInit {
   gameId: string;
   game: any;
   cards: any;
@@ -88,8 +88,8 @@ export class GameComponent implements OnInit {
     }
 
     var messageListRef = this.db.database.ref(`games/${this.gameId}/clues`);
-      var newMessageRef = messageListRef.push();
-      newMessageRef.set(clue);
+    var newMessageRef = messageListRef.push();
+    newMessageRef.set(clue);
 
     this.clueForm.reset();
   }
