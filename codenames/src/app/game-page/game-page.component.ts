@@ -33,7 +33,7 @@ export class GamePageComponent implements OnInit {
     private formBuilder: FormBuilder,) { 
     this.gameId = this.route.snapshot.paramMap.get('gameId');
     this.isCodeMaster= new BehaviorSubject(false);
-    this.clues = this.db.object(`games/${this.gameId}/clues`).valueChanges().pipe(map(obj => Object.values(obj))); 
+    this.clues = this.db.object(`games/${this.gameId}/clues`).valueChanges().pipe(map(obj => obj? Object.values(obj) : [])); 
     this.cards = this.isCodeMaster.pipe(
       switchMap(isCodeMaster => {
         if(!isCodeMaster){
