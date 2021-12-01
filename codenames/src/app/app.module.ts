@@ -12,6 +12,8 @@ import { BoardComponent } from './board/board.component';
 import { SigninComponent } from './signin/signin.component';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { GameComponent } from './game/game.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+
 
 @NgModule({
   declarations: [
@@ -27,6 +29,8 @@ import { GameComponent } from './game/game.component';
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
+    FormsModule, 
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

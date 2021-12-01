@@ -3,6 +3,8 @@ import { Card, CardType } from '../types';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { first, switchMap, map} from 'rxjs/operators';
+import { FormBuilder } from '@angular/forms';
+
 
 import { WORDS } from '../words';
 import { AngularFireDatabase } from '@angular/fire/database';
@@ -20,7 +22,14 @@ export class GameComponent implements OnInit {
   // types: Promise<CardType[]>;
   isCodeMaster: BehaviorSubject<boolean>;
 
-  constructor(private route: ActivatedRoute, private db: AngularFireDatabase) { 
+  clueForm = this.formBuilder.group({
+    word: '',
+    number: 0
+  });
+
+  constructor(private route: ActivatedRoute, 
+    private db: AngularFireDatabase,
+    private formBuilder: FormBuilder,) { 
     this.gameId = this.route.snapshot.paramMap.get('gameId');
     this.isCodeMaster= new BehaviorSubject(false);
     
@@ -46,7 +55,6 @@ export class GameComponent implements OnInit {
           );
       })
     )
-  
   }
 
   ngOnInit(): void {
@@ -70,5 +78,18 @@ export class GameComponent implements OnInit {
 
   becomePlayer(){
     this.isCodeMaster.next(false);
+  }
+
+  onSubmit(): void {
+    const clue = {
+      word: this.clueForm.get('word').value,
+      number: this.clueForm.get('number').value,
+    }
+
+    var messageListRef = this.db.database.ref(`games/${this.gameId}/clues`);
+      var newMessageRef = messageListRef.push();
+      newMessageRef.set(clue);
+
+    this.clueForm.reset();
   }
 }
