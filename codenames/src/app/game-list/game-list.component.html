@@ -1,9 +1,9 @@
 <div *ngIf="(gameList | async) as gameList">
-		<li *ngFor="let game in gameList">
-			<div>
-				<span>
-					{{game}}
-				</span>
-			</div>
-	    </li>
+	<div *ngFor="let game of (gameIds | async)">
+		<div>
+			<a routerLink="/games/{{game}}" routerLinkActive="active">
+				{{game}}
+			</a>
+		</div>
+    </div>
 </div>

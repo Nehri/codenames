@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
-import { map, tap } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -13,11 +13,8 @@ export class GameListComponent implements OnInit {
   gameIds: Observable<string[]>;
 
   constructor(private db: AngularFireDatabase,) { 
-    this.gameList = this.db.object(`games`).valueChanges().pipe(tap(games => {
-      const a = 1;
-    }));
-    this.gameIds = this.gameList.pipe(map(gameObject => {
-      return Object.keys(gameObject); }));
+    this.gameList = this.db.object(`games`).valueChanges().pipe(shareReplay());
+    this.gameIds = this.gameList.pipe(map(gameObject => Object.keys(gameObject)));
   }
 
   ngOnInit(): void {
