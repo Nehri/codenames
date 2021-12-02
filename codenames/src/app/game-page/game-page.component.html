@@ -7,8 +7,7 @@
     </button>
 
     <ng-template #gameBoard>
-        <button *ngIf="(gameState | async) !== GameState.STARTED || 
-                       (gameState | async) !== GameState.ENDED; else showGame" 
+        <button *ngIf="(gameState | async) === GameState.CREATED; else showGame" 
           (click)="startGame()">
             Start game
         </button>
@@ -55,4 +54,13 @@
             </ng-template>
         </ng-template>
     </ng-template>
+
+    <h2>
+        Players
+    </h2>
+    <ol>
+        <li *ngFor="let player of (players | async)">
+            {{player.email}}
+        </li>
+    </ol>
 </ng-container>
