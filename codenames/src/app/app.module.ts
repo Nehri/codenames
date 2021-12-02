@@ -17,6 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatCardModule } from '@angular/material/card';
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import { MatChipsModule } from '@angular/material/chips';
     MatToolbarModule,
     MatListModule,
     MatChipsModule,
+    MatCardModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

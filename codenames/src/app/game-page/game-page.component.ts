@@ -53,7 +53,7 @@ export class GamePageComponent implements OnInit {
       const a = 1;
       return (gameState ?? GameState.UNKNOWN) as GameState;
     }), shareReplay(1));
-    this.hideGameBoard = this.gameState.pipe(map(gameState => gameState !== GameState.STARTED && gameState !== GameState.ENDED));
+    this.hideGameBoard = this.gameState.pipe(map(gameState => gameState !== GameState.STARTED && gameState !== GameState.ENDED), shareReplay(1));
     this.clues = this.db.object(`games/${this.gameId}/clues`).valueChanges().pipe(map(obj => obj? Object.values(obj) : []));
     this.cards = this.isCodeMaster.pipe(
       switchMap(isCodeMaster => {
@@ -130,8 +130,6 @@ export class GamePageComponent implements OnInit {
       let guessesRemaining = currentTurn['guessesRemaining'] as number;
       guessesRemaining--;
 
-      // Switch phase & team if guesses is 0 or card did not match the team.
-
       let shouldChangeTeam = false;
       let team = currentTurn['team'];
       let phase = currentTurn['phase'];
@@ -157,7 +155,7 @@ export class GamePageComponent implements OnInit {
   }
 
   updateScore() {
-    
+
   }
 
   getOppositeTurn(team: Team){
