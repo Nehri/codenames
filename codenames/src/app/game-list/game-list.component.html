@@ -1,14 +1,14 @@
 <ng-container *ngIf="(user | async) as user">
-	<button (click)="createNewGame(user)">
+	<button mat-raised-button color="primary" (click)="createNewGame(user)">
 		Create new game
 	</button>
-	<div *ngIf="(gameList | async) as gameList">
-		<div *ngFor="let game of (gameIds | async)">
+	<mat-list role="list" *ngIf="(gameList | async) as gameList">
+		<mat-list-item *ngFor="let game of (gameIds | async)">
 			<div>
 				<a routerLink="/games/{{game}}" routerLinkActive="active">
 					{{game}}
 				</a>
 			</div>
-	    </div>
-	</div>
+	    </mat-list-item>
+	</mat-list>
 </ng-container>

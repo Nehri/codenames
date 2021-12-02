@@ -46,12 +46,12 @@ export class GamePageComponent implements OnInit {
     private formBuilder: FormBuilder,
     private afAuth: AngularFireAuth,) { 
     this.gameId = this.route.snapshot.paramMap.get('gameId');
-    this.user = afAuth.authState.pipe(shareReplay());
+    this.user = afAuth.authState.pipe(shareReplay(1));
     this.isCodeMaster= new BehaviorSubject(false);
     this.gameState = this.db.object(`games/${this.gameId}/gameState`).valueChanges().pipe(map(gameState => {
       const a = 1;
       return (gameState ?? GameState.UNKNOWN) as GameState;
-    }), shareReplay());
+    }), shareReplay(1));
     this.hideGameBoard = this.gameState.pipe(map(gameState => gameState !== GameState.STARTED && gameState !== GameState.ENDED));
     this.clues = this.db.object(`games/${this.gameId}/clues`).valueChanges().pipe(map(obj => obj? Object.values(obj) : []));
     this.cards = this.isCodeMaster.pipe(
