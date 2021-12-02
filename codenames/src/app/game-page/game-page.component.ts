@@ -1,9 +1,17 @@
 import { Component, OnInit } from '@angular/core';
+<<<<<<< HEAD
 import { Card, CardType, Team, TurnPhase } from '../types';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { first, switchMap, map, shareReplay} from 'rxjs/operators';
+=======
+import { Card, CardType, User } from '../types';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
+import { first, switchMap, map, shareReplay } from 'rxjs/operators';
+>>>>>>> f4d77d6 (separate joining vs creating games)
 import { FormBuilder } from '@angular/forms';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 
 import { WORDS } from '../words';
@@ -20,13 +28,18 @@ export class GamePageComponent implements OnInit {
   game: any;
   cards: any;
   clues: any;
+  isInGame: Observable<boolean>;
   // types: Promise<CardType[]>;
   isCodeMaster: BehaviorSubject<boolean>;
+<<<<<<< HEAD
   turnPhase: Observable<any>;
   guessesRemaining: Observable<any>;
   teamTurn: Observable<any>;
   canClickCards: Observable<boolean>;
   canNotGiveClues: Observable<boolean>;
+=======
+  user: Observable<User>;
+>>>>>>> f4d77d6 (separate joining vs creating games)
 
   clueForm = this.formBuilder.group({
     word: '',
@@ -35,8 +48,10 @@ export class GamePageComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, 
     private db: AngularFireDatabase,
-    private formBuilder: FormBuilder,) { 
+    private formBuilder: FormBuilder,
+    private afAuth: AngularFireAuth,) { 
     this.gameId = this.route.snapshot.paramMap.get('gameId');
+    this.user = afAuth.authState.pipe(shareReplay());
     this.isCodeMaster= new BehaviorSubject(false);
     this.clues = this.db.object(`games/${this.gameId}/clues`).valueChanges().pipe(map(obj => obj? Object.values(obj) : [])); 
     this.cards = this.isCodeMaster.pipe(
@@ -61,6 +76,7 @@ export class GamePageComponent implements OnInit {
           );
       })
     );
+<<<<<<< HEAD
 
     this.turnPhase = this.db.object(`games/${this.gameId}/currentTurn/phase`).valueChanges().pipe(shareReplay(1));
     this.canClickCards = this.turnPhase.pipe(map(gamePhase => gamePhase === TurnPhase.GUESSING), shareReplay(1));
@@ -68,9 +84,22 @@ export class GamePageComponent implements OnInit {
 
     this.guessesRemaining = this.db.object(`games/${this.gameId}/currentTurn/guessesRemaining`).valueChanges().pipe(shareReplay(1));
     this.teamTurn = this.db.object(`games/${this.gameId}/currentTurn/team`).valueChanges().pipe(shareReplay(1));
+=======
+    this.isInGame = combineLatest([this.user, this.db.object(`games/${this.gameId}/players`).valueChanges()]).pipe(map(([user, players]) => {
+      return !!players ? Object.keys(players).includes(user.uid ?? '') : false;
+    }));
+>>>>>>> f4d77d6 (separate joining vs creating games)
   }
 
   ngOnInit(): void {
+  }
+
+  joinGame(user: User) {
+    this.db.object(`games/${this.gameId}/players`).valueChanges().pipe(first()).subscribe(players => {
+      if (!players) players = {};
+      players[user.uid] = user.email;
+      this.db.object(`games/${this.gameId}/players`).update(players);
+    });
   }
 
   flipCard({row, col}, cards) {

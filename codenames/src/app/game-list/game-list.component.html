@@ -1,12 +1,14 @@
-<button (click)="createNewGame(user.uid)">
-	Create new game
-</button>
-<div *ngIf="(gameList | async) as gameList">
-	<div *ngFor="let game of (gameIds | async)">
-		<div>
-			<a routerLink="/games/{{game}}" routerLinkActive="active">
-				{{game}}
-			</a>
-		</div>
-    </div>
-</div>
+<ng-container *ngIf="(user | async) as user">
+	<button (click)="createNewGame(user)">
+		Create new game
+	</button>
+	<div *ngIf="(gameList | async) as gameList">
+		<div *ngFor="let game of (gameIds | async)">
+			<div>
+				<a routerLink="/games/{{game}}" routerLinkActive="active">
+					{{game}}
+				</a>
+			</div>
+	    </div>
+	</div>
+</ng-container>

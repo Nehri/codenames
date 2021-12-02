@@ -10,6 +10,7 @@ export enum CardType{
 	NEUTRAL = 'NEUTRAL',
 	UNKNOWN = 'UNKNOWN',
 } 
+
 export enum Team {
 	TEAM_RED = 'TEAM_RED',
 	TEAM_BLUE = 'TEAM_BLUE',
@@ -20,7 +21,7 @@ export enum TurnPhase {
 	GUESSING = 'GUESSING',
 }
 
-export interface Card{
+export interface Card {
 	word: string;
 	type: CardType;
 }
@@ -29,6 +30,11 @@ export enum GameState {
 	CREATED = 'CREATED',
 	STARTED = 'STARTED',
 	ENDED = 'ENDED',
+}
+
+export interface User {
+	uid: string;
+	email: string;
 }
 
 // enum Team: 'TEAM_A'|'TEAM_B';

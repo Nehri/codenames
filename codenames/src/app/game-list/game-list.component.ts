@@ -6,7 +6,7 @@ import * as uuid from 'uuid';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 
-import { Card, CardType, GameState } from '../types';
+import { Card, CardType, GameState, User } from '../types';
 import { WORDS } from '../words';
 
 
@@ -18,7 +18,7 @@ import { WORDS } from '../words';
 export class GameListComponent implements OnInit {
   gameList: any;
   gameIds: Observable<string[]>;
-  user: any;
+  user: Observable<User>;
 
   constructor(private db: AngularFireDatabase, private router: Router, private afAuth: AngularFireAuth) { 
     this.gameList = this.db.object(`games`).valueChanges().pipe(shareReplay());
@@ -29,12 +29,14 @@ export class GameListComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  createNewGame(userId: string){
+  createNewGame(user: User){
     const cards = this.generateCards();
     const types = this.generateTypes();
     const gameId = uuid.v4();
     const game = this.db.object(`games/${gameId}`);
-    game.set({cards, types, gameState: GameState.CREATED});
+    const players = {};
+    players[user.uid] = user.email;
+    game.set({cards, types, players, gameState: GameState.CREATED});
     this.router.navigate([`/games/${gameId}`]);
   }
 
