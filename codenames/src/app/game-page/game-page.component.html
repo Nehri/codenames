@@ -1,36 +1,35 @@
 <p>game id {{gameId}}</p>
-<<<<<<< HEAD
-<p>Team turn: {{teamTurn | async}}</p>
-<p>Turn phase: {{turnPhase | async}}</p>
-<p>Guesses remaining: {{guessesRemaining | async}}</p>
-<div *ngIf="(isCodeMaster | async); else becomeCodemaster">
-    <button (click)="becomePlayer()">Become player</button>
-    <form [formGroup]="clueForm" (ngSubmit)="onSubmit()">
-    
-        <div>
-            <label for="word">
-              Word
-            </label>
-            <input id="word" type="text" formControlName="word">
-          </div>
-        
-          <div>
-            <label for="number">
-              Number
-            </label>
-            <input id="number" type="number" formControlName="number">
-          </div>
-    
-        <button class="button" type="submit" [disabled]="(canNotGiveClues | async)">Submit Clue</button>
-      
-      </form>
-</div>
-=======
+
 <ng-container *ngIf="(user | async) as user">
+    <p>Team turn: {{teamTurn | async}}</p>
+    <p>Turn phase: {{turnPhase | async}}</p>
+    <p>Guesses remaining: {{guessesRemaining | async}}</p>
+    <div *ngIf="(isCodeMaster | async); else becomeCodemaster">
+        <button (click)="becomePlayer()">Become player</button>
+        <form [formGroup]="clueForm" (ngSubmit)="onSubmit()">
+        
+            <div>
+                <label for="word">
+                  Word
+                </label>
+                <input id="word" type="text" formControlName="word">
+              </div>
+            
+              <div>
+                <label for="number">
+                  Number
+                </label>
+                <input id="number" type="number" formControlName="number">
+              </div>
+        
+            <button class="button" type="submit" [disabled]="(canNotGiveClues | async)">Submit Clue</button>
+          
+          </form>
+    </div>
+
     <button *ngIf="!(isInGame | async); else gameBoard" (click)="joinGame(user)">
         Join game
     </button>
->>>>>>> f4d77d6 (separate joining vs creating games)
 
     <ng-template #gameBoard>
         <div *ngIf="(isCodeMaster | async); else becomeCodemaster">
@@ -62,22 +61,14 @@
             </li>
         </ol>
 
+        <board  *ngIf="(cards | async) as cards" 
+          [cards]="cards" 
+          [clickingEnabled]="canClickCards | async"
+          (cardClicked)="flipCard($event, cards)">
+        </board>
+    </ng-template>
 
-        <ng-template #becomeCodemaster>
-            <button (click)="becomeCodeMaster()">Become codemaster</button>
-        </ng-template>
-
-
-
-<<<<<<< HEAD
-<board  *ngIf="(cards | async) as cards" 
-  [cards]="cards" 
-  [clickingEnabled]="canClickCards | async"
-  (cardClicked)="flipCard($event, cards)">
-</board>
-
-=======
-        <board  *ngIf="(cards | async) as cards" [cards]="cards" (cardClicked)="flipCard($event, cards)"></board>
+    <ng-template #becomeCodemaster>
+        <button (click)="becomeCodeMaster()">Become codemaster</button>
     </ng-template>
 </ng-container>
->>>>>>> f4d77d6 (separate joining vs creating games)
