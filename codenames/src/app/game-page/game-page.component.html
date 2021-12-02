@@ -14,7 +14,7 @@
         <div *ngIf="!(hideGameBoard | async)">
             <p>Team turn: {{teamTurn | async}}</p>
             <p>Turn phase: {{turnPhase | async}}</p>
-            <p>Guesses remaining: {{guessesRemaining | async}}</p>
+            <p *ngIf="(guessesRemaining | async) > 0">Guesses remaining: {{guessesRemaining | async}}</p>
             <div *ngIf="(isCodeMaster | async); else becomeCodemaster">
                 <button mat-raised-button color="primary" (click)="becomePlayer()">Become player</button>
                 <form [formGroup]="clueForm" (ngSubmit)="onSubmit()">

@@ -120,23 +120,44 @@ export class GamePageComponent implements OnInit {
         cards[row][col].type = cardType;
         this.db.object(`games/${this.gameId}`).update({cards});
         this.getAndUpdateValue(`games/${this.gameId}/currentTurn/guessesRemaining`, (guesses) => guesses -1);
-        this.decrementguesses();
+        this.updateTeamAndPhase(cardType);
       }
     });
   }
 
-  decrementguesses(){
+  updateTeamAndPhase(cardType){
     this.getAndUpdateValue(`games/${this.gameId}/currentTurn`,(currentTurn) =>{
       let guessesRemaining = currentTurn['guessesRemaining'] as number;
       guessesRemaining--;
-      const phase = guessesRemaining ? TurnPhase.GUESSING : TurnPhase.CLUE_GIVING;
-      const team = guessesRemaining <= 0 ? this.getOppositeTurn(currentTurn['team']) : currentTurn['team'];
+
+      // Switch phase & team if guesses is 0 or card did not match the team.
+
+      let shouldChangeTeam = false;
+      let team = currentTurn['team'];
+      let phase = currentTurn['phase'];
+      if (guessesRemaining <= 0 || !this.isMatchingTeamCard(cardType, currentTurn['team'])) {
+         phase = TurnPhase.CLUE_GIVING;
+         team = this.getOppositeTurn(currentTurn['team']);
+         guessesRemaining = 0;
+      }
+      //const phase = guessesRemaining ? TurnPhase.GUESSING : TurnPhase.CLUE_GIVING;
+      //const team = guessesRemaining <= 0 ? this.getOppositeTurn(currentTurn['team']) : currentTurn['team'];
       return {
         team,
         phase,
         guessesRemaining,
       }
     }); 
+  }
+
+  isMatchingTeamCard(cardType, team) {
+     if (team === Team.TEAM_BLUE && cardType === CardType.TEAM_BLUE) return true;
+     if (team === Team.TEAM_RED && cardType === CardType.TEAM_RED) return true;
+     return false;
+  }
+
+  updateScore() {
+    
   }
 
   getOppositeTurn(team: Team){
