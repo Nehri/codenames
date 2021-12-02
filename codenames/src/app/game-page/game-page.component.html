@@ -2,21 +2,21 @@
 <p>{{gameState | async}}</p>
 
 <ng-container *ngIf="(user | async) as user">
-    <button *ngIf="!(isInGame | async); else gameBoard" (click)="joinGame(user)">
+    <button mat-raised-button color="primary" *ngIf="!(isInGame | async); else gameBoard" (click)="joinGame(user)">
         Join game
     </button>
 
     <ng-template #gameBoard>
-        <button *ngIf="(gameState | async) === GameState.CREATED; else showGame" 
+        <button mat-raised-button color="primary" *ngIf="(hideGameBoard | async)" 
           (click)="startGame()">
             Start game
         </button>
-        <ng-template #showGame>
+        <div *ngIf="!(hideGameBoard | async)">
             <p>Team turn: {{teamTurn | async}}</p>
             <p>Turn phase: {{turnPhase | async}}</p>
             <p>Guesses remaining: {{guessesRemaining | async}}</p>
             <div *ngIf="(isCodeMaster | async); else becomeCodemaster">
-                <button (click)="becomePlayer()">Become player</button>
+                <button mat-raised-button color="primary" (click)="becomePlayer()">Become player</button>
                 <form [formGroup]="clueForm" (ngSubmit)="onSubmit()">
                 
                     <div>
@@ -50,9 +50,9 @@
               (cardClicked)="flipCard($event, cards)">
             </board>
             <ng-template #becomeCodemaster>
-                <button (click)="becomeCodeMaster()">Become codemaster</button>
+                <button mat-button (click)="becomeCodeMaster()">Become codemaster</button>
             </ng-template>
-        </ng-template>
+        </div>
     </ng-template>
 
     <h2>

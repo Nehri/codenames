@@ -24,6 +24,7 @@ export class GamePageComponent implements OnInit {
   clues: any;
   players: any;
   isInGame: Observable<boolean>;
+  hideGameBoard: Observable<boolean>;
   // types: Promise<CardType[]>;
   isCodeMaster: BehaviorSubject<boolean>;
   turnPhase: Observable<any>;
@@ -47,7 +48,11 @@ export class GamePageComponent implements OnInit {
     this.gameId = this.route.snapshot.paramMap.get('gameId');
     this.user = afAuth.authState.pipe(shareReplay());
     this.isCodeMaster= new BehaviorSubject(false);
-    this.gameState = this.db.object(`games/${this.gameId}/gameState`).valueChanges().pipe(map(gameState => gameState || GameState.UNKNOWN));
+    this.gameState = this.db.object(`games/${this.gameId}/gameState`).valueChanges().pipe(map(gameState => {
+      const a = 1;
+      return (gameState ?? GameState.UNKNOWN) as GameState;
+    }), shareReplay());
+    this.hideGameBoard = this.gameState.pipe(map(gameState => gameState !== GameState.STARTED && gameState !== GameState.ENDED));
     this.clues = this.db.object(`games/${this.gameId}/clues`).valueChanges().pipe(map(obj => obj? Object.values(obj) : []));
     this.cards = this.isCodeMaster.pipe(
       switchMap(isCodeMaster => {

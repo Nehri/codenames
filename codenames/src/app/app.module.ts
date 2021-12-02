@@ -6,7 +6,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from 'src/environments/environment';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { CardComponent } from './card/card.component';
 import { BoardComponent } from './board/board.component';
 import { SigninComponent } from './signin/signin.component';
@@ -14,6 +13,8 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { GamePageComponent } from './game-page/game-page.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { GameListComponent } from './game-list/game-list.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 
 @NgModule({
@@ -32,7 +33,9 @@ import { GameListComponent } from './game-list/game-list.component';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     FormsModule, 
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatToolbarModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
