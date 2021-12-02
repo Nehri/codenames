@@ -18,12 +18,14 @@
             </div>
         </mat-card-content>
         <mat-card-actions>
-            <button mat-raised-button color="primary" *ngIf="!(isInGame | async)" (click)="joinGame(user)">
+            <button mat-raised-button color="primary" *ngIf="!(isInGame | async); else startGameButton" (click)="joinGame(user)">
                 Join game
             </button>
-            <button mat-raised-button color="primary" *ngIf="(isInGame | async) && (hideGameBoard | async)" (click)="startGame()">
-                Start game
-            </button>
+            <ng-template #startGameButton>
+                <button mat-raised-button color="primary" *ngIf="(hideGameBoard | async)" (click)="startGame()">
+                    Start game
+                </button>
+            </ng-template>
             <button mat-button color="primary" (click)="endGame()">
                 End game
             </button>
@@ -69,7 +71,7 @@
           (cardClicked)="flipCard($event, cards)">
         </board>
         <ng-template #becomeCodemaster>
-            <button mat-button (click)="becomeCodeMaster()">Become codemaster</button>
+            <button mat-raised-button color="primary" (click)="becomeCodeMaster()">Become codemaster</button>
         </ng-template>
     </div>
 </ng-container>

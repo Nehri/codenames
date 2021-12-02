@@ -92,7 +92,7 @@ export class GamePageComponent implements OnInit {
     this.teamTurn = this.db.object(`games/${this.gameId}/currentTurn/team`).valueChanges().pipe(shareReplay(1));
     this.isInGame = combineLatest([this.user, this.db.object(`games/${this.gameId}/players`).valueChanges()]).pipe(map(([user, players]) => {
       return !!players ? Object.keys(players).includes(user.uid ?? '') : false;
-    }));
+    }), shareReplay(1));
   }
 
   ngOnInit(): void {
