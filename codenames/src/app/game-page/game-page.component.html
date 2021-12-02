@@ -7,10 +7,10 @@
                 </mat-card-title>
                 <mat-card-content>
                     <div>
-                        <span>Status: {{gameState | async}}</span>
+                        <span><b>Status:</b> {{gameState | async}}</span>
                     </div>
                     <div>
-                        <span>Players: 
+                        <span><b>Players:</b>
                             <mat-chip-list>
                                 <mat-chip *ngFor="let player of (players | async)">
                                     {{player.email}}
@@ -22,6 +22,41 @@
                         <p>Team turn: {{teamTurn | async}}</p>
                         <p>Turn phase: {{turnPhase | async}}</p>
                         <p *ngIf="(guessesRemaining | async) > 0">Guesses remaining: {{guessesRemaining | async}}</p>
+                        <div style="margin-bottom: 50px;">
+                            <span><b>Clues: </b>
+                                <mat-chip-list>
+                                    <mat-chip *ngFor="let clue of (clues | async)">
+                                        {{clue.word}}: {{clue.number}}
+                                    </mat-chip>
+                                </mat-chip-list>
+                            </span>
+                        </div>
+
+                        <div *ngIf="(isCodeMaster | async); else becomeCodemaster">
+                            <button mat-raised-button color="primary" (click)="becomePlayer()">Become player</button>
+                            <form [formGroup]="clueForm" (ngSubmit)="onSubmit()" style="margin-top: 20px;">
+                            
+                                <div>
+                                    <label for="word">
+                                      Word
+                                    </label>
+                                    <input matInput id="word" type="text" formControlName="word">
+                                  </div>
+                                
+                                  <div>
+                                    <label for="number">
+                                      Number
+                                    </label>
+                                    <input  matInput id="number" type="number" formControlName="number">
+                                  </div>
+                            
+                                <button mat-raised-button color="primary" class="button" type="submit" style="margin-top: 20px;">Submit Clue</button>
+                              
+                              </form>
+                        </div>
+                        <ng-template #becomeCodemaster>
+                            <button mat-raised-button color="primary" (click)="becomeCodeMaster()">Become codemaster</button>
+                        </ng-template>
                     </div>
                 </mat-card-content>
                 <mat-card-actions style="float: bottom">
@@ -42,44 +77,11 @@
 
         <div id="main-grid" style="width: 80%; float: right; background-image: 'url(../assets/double-bubble-outline.png)'">
             <div *ngIf="!(hideGameBoard | async)">
-                
-                <div *ngIf="(isCodeMaster | async); else becomeCodemaster">
-                    <button mat-raised-button color="primary" (click)="becomePlayer()">Become player</button>
-                    <form [formGroup]="clueForm" (ngSubmit)="onSubmit()">
-                    
-                        <div>
-                            <label for="word">
-                              Word
-                            </label>
-                            <input id="word" type="text" formControlName="word">
-                          </div>
-                        
-                          <div>
-                            <label for="number">
-                              Number
-                            </label>
-                            <input id="number" type="number" formControlName="number">
-                          </div>
-                    
-                        <button class="button" type="submit">Submit Clue</button>
-                      
-                      </form>
-                </div>
-
-                <ol>
-                    <li *ngFor="let clue of (clues | async)">
-                        {{clue.word}}: {{clue.number}}
-                    </li>
-                </ol>
-
                 <board  *ngIf="(cards | async) as cards" 
                   [cards]="cards" 
                   [clickingEnabled]="canClickCards | async"
                   (cardClicked)="flipCard($event, cards)">
                 </board>
-                <ng-template #becomeCodemaster>
-                    <button mat-raised-button color="primary" (click)="becomeCodeMaster()">Become codemaster</button>
-                </ng-template>
             </div>
         </div>
     </ng-container>
