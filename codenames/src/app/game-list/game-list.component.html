@@ -1,14 +1,16 @@
-<ng-container *ngIf="(user | async) as user">
-	<button mat-raised-button color="primary" (click)="createNewGame(user)">
-		Create new game
-	</button>
-	<mat-list role="list" *ngIf="(gameList | async) as gameList">
-		<mat-list-item *ngFor="let game of (gameIds | async)">
-			<div>
-				<a routerLink="/games/{{game}}" routerLinkActive="active">
-					{{game}}
-				</a>
-			</div>
-	    </mat-list-item>
-	</mat-list>
-</ng-container>
+<div style="background-image: 'url(../assets/double-bubble-outline.png)'; height: 100%">
+	<ng-container *ngIf="(user | async) as user">
+		<button mat-raised-button color="primary" (click)="createNewGame(user)">
+			Create new game
+		</button>
+		<mat-list role="list" *ngIf="(gameList | async) as gameList">
+			<mat-list-item *ngFor="let game of (gameIds | async)">
+				<div>
+					<a routerLink="/games/{{game}}" routerLinkActive="active">
+						{{game}}
+					</a>
+				</div>
+		    </mat-list-item>
+		</mat-list>
+	</ng-container>
+</div>

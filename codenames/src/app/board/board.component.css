@@ -8,3 +8,8 @@
   card{
       flex-grow:1;
   }
+
+#board {
+  width:  80%;
+  float:  right;
+}

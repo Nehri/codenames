@@ -44,4 +44,5 @@ export const WORDS = [
 	'delicate',
 	'chief',
 	'folklore',
+	'platypus',
 ];
