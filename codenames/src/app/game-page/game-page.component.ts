@@ -44,7 +44,8 @@ export class GamePageComponent implements OnInit {
   constructor(private route: ActivatedRoute, 
     private db: AngularFireDatabase,
     private formBuilder: FormBuilder,
-    private afAuth: AngularFireAuth,) { 
+    private afAuth: AngularFireAuth,
+    private router: Router,) { 
     this.gameId = this.route.snapshot.paramMap.get('gameId');
     this.user = afAuth.authState.pipe(shareReplay(1));
     this.isCodeMaster= new BehaviorSubject(false);
@@ -176,5 +177,11 @@ export class GamePageComponent implements OnInit {
     guessesRemaining.set(clue.number);
 
     this.clueForm.reset();
+  }
+
+  endGame() {
+    const game = this.db.object(`games/${this.gameId}`);
+    game.remove();
+    this.router.navigate([`/games`]);
   }
 }
