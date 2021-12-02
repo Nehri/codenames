@@ -1,51 +1,58 @@
 <p>game id {{gameId}}</p>
+<p>{{gameState | async}}</p>
 
 <ng-container *ngIf="(user | async) as user">
-    <p>Team turn: {{teamTurn | async}}</p>
-    <p>Turn phase: {{turnPhase | async}}</p>
-    <p>Guesses remaining: {{guessesRemaining | async}}</p>
-
     <button *ngIf="!(isInGame | async); else gameBoard" (click)="joinGame(user)">
         Join game
     </button>
 
     <ng-template #gameBoard>
-        <div *ngIf="(isCodeMaster | async); else becomeCodemaster">
-            <button (click)="becomePlayer()">Become player</button>
-            <form [formGroup]="clueForm" (ngSubmit)="onSubmit()">
-            
-                <div>
-                    <label for="word">
-                      Word
-                    </label>
-                    <input id="word" type="text" formControlName="word">
-                  </div>
+        <button *ngIf="(gameState | async) !== GameState.STARTED || 
+                       (gameState | async) !== GameState.ENDED; else showGame" 
+          (click)="startGame()">
+            Start game
+        </button>
+        <ng-template #showGame>
+            <p>Team turn: {{teamTurn | async}}</p>
+            <p>Turn phase: {{turnPhase | async}}</p>
+            <p>Guesses remaining: {{guessesRemaining | async}}</p>
+            <div *ngIf="(isCodeMaster | async); else becomeCodemaster">
+                <button (click)="becomePlayer()">Become player</button>
+                <form [formGroup]="clueForm" (ngSubmit)="onSubmit()">
                 
-                  <div>
-                    <label for="number">
-                      Number
-                    </label>
-                    <input id="number" type="number" formControlName="number">
-                  </div>
-            
-                <button class="button" type="submit">Submit Clue</button>
-              
-              </form>
-        </div>
+                    <div>
+                        <label for="word">
+                          Word
+                        </label>
+                        <input id="word" type="text" formControlName="word">
+                      </div>
+                    
+                      <div>
+                        <label for="number">
+                          Number
+                        </label>
+                        <input id="number" type="number" formControlName="number">
+                      </div>
+                
+                    <button class="button" type="submit">Submit Clue</button>
+                  
+                  </form>
+            </div>
 
-        <ol>
-            <li *ngFor="let clue of (clues | async)">
-                {{clue.word}}: {{clue.number}}
-            </li>
-        </ol>
+            <ol>
+                <li *ngFor="let clue of (clues | async)">
+                    {{clue.word}}: {{clue.number}}
+                </li>
+            </ol>
 
-        <board  *ngIf="(cards | async) as cards" 
-          [cards]="cards" 
-          [clickingEnabled]="canClickCards | async"
-          (cardClicked)="flipCard($event, cards)">
-        </board>
-        <ng-template #becomeCodemaster>
-            <button (click)="becomeCodeMaster()">Become codemaster</button>
+            <board  *ngIf="(cards | async) as cards" 
+              [cards]="cards" 
+              [clickingEnabled]="canClickCards | async"
+              (cardClicked)="flipCard($event, cards)">
+            </board>
+            <ng-template #becomeCodemaster>
+                <button (click)="becomeCodeMaster()">Become codemaster</button>
+            </ng-template>
         </ng-template>
     </ng-template>
 </ng-container>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Card, CardType, Team, TurnPhase, User } from '../types';
+import { Card, CardType, GameState, Team, TurnPhase, User } from '../types';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { first, switchMap, map, shareReplay} from 'rxjs/operators';
 import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
@@ -19,6 +19,7 @@ import { AngularFireDatabase } from '@angular/fire/database';
 export class GamePageComponent implements OnInit {
   gameId: string;
   game: any;
+  gameState: Observable<GameState>;
   cards: any;
   clues: any;
   isInGame: Observable<boolean>;
@@ -30,6 +31,8 @@ export class GamePageComponent implements OnInit {
   canClickCards: Observable<boolean>;
   canNotGiveClues: Observable<boolean>;
   user: Observable<User>;
+
+  readonly GameState = GameState;
 
   clueForm = this.formBuilder.group({
     word: '',
@@ -43,7 +46,8 @@ export class GamePageComponent implements OnInit {
     this.gameId = this.route.snapshot.paramMap.get('gameId');
     this.user = afAuth.authState.pipe(shareReplay());
     this.isCodeMaster= new BehaviorSubject(false);
-    this.clues = this.db.object(`games/${this.gameId}/clues`).valueChanges().pipe(map(obj => obj? Object.values(obj) : [])); 
+    this.gameState = this.db.object(`games/${this.gameId}/gameState`).valueChanges().pipe(map(gameState => gameState ?? GameState.UNKNOWN));
+    this.clues = this.db.object(`games/${this.gameId}/clues`).valueChanges().pipe(map(obj => obj? Object.values(obj) : []));
     this.cards = this.isCodeMaster.pipe(
       switchMap(isCodeMaster => {
         if(!isCodeMaster){
@@ -86,6 +90,11 @@ export class GamePageComponent implements OnInit {
       players[user.uid] = user.email;
       this.db.object(`games/${this.gameId}/players`).update(players);
     });
+  }
+
+  startGame() {
+    const game = this.db.object(`games/${this.gameId}`);
+    game.update({gameState: GameState.STARTED});
   }
 
   flipCard({row, col}, cards) {
