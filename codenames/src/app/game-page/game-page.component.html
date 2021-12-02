@@ -58,9 +58,9 @@
     <h2>
         Players
     </h2>
-    <ol>
-        <li *ngFor="let player of (players | async)">
+    <mat-chip-list>
+        <mat-chip *ngFor="let player of (players | async)">
             {{player.email}}
-        </li>
-    </ol>
+        </mat-chip>
+    </mat-chip-list>
 </ng-container>
