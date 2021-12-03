@@ -15,7 +15,7 @@ export const WORDS = [
 	// Google NYC words
 	'pano',
 	'5bb',
-	'button wall',
+	'buttonwall',
 	'laplace',
 	// General words
 	'kale',
@@ -25,7 +25,6 @@ export const WORDS = [
 	'matter',
 	'market',
 	'rotate',
-	'personality',
 	'scrape',
 	'decoration',
 	'factory',
@@ -45,4 +44,15 @@ export const WORDS = [
 	'chief',
 	'folklore',
 	'platypus',
+	'spring',
+	'suburb',
+	'door',
+	'outfit',
+	'hike',
+	'decay',
+	'drama',
+	'speculate',
+	'comfort',
+	'ignite',
+	'insurance',
 ];
