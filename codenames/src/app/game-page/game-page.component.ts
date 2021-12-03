@@ -137,6 +137,11 @@ export class GamePageComponent implements OnInit {
           }
           this.getAndUpdateNumber(`games/${this.gameId}/`, (cardsLeft) => cardsLeft -1, objectKey);
         }
+
+        if (cardType === CardType.DEATH) {
+           this.completeGame(this.getOppositeTurn(team as Team));
+        }
+
         this.updateTeamAndPhase(cardType);
       }
     });
