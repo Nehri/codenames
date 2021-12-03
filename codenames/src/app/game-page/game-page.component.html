@@ -43,17 +43,25 @@
                             </span>
                         </div>
 
-                        <div>
-                            <p>
-                                <span style="color: #ff0000">Team Red</span> has {{redCardsLeft | async}} cards left to guess
-                            </p>
-                            <p>
-                                <span style="color:  #0000ff">Team Blue</span> has {{blueCardsLeft | async}} cards left to guess
-                            </p>
-                        </div>
+                        <div style="padding-bottom: 20px;">
+                            <div *ngIf="(gameState | async) !== 'ENDED'">
+                                <p>
+                                    <span style="color: #ff0000">Team Red</span> has {{redCardsLeft | async}} cards left to guess
+                                </p>
+                                <p>
+                                    <span style="color:  #0000ff">Team Blue</span> has {{blueCardsLeft | async}} cards left to guess
+                                </p>
+                            </div>
 
-                        <div *ngIf="(gameState | async) === 'ENDED'">
-                            Game ended
+                            <div *ngIf="(gameState | async) === 'ENDED'">
+                                Game won by
+                                <span *ngIf="(winningTeam | async) === 'TEAM_BLUE'" style="color:  #0000ff">
+                                    Team Blue
+                                </span> 
+                                <span *ngIf="(winningTeam | async) === 'TEAM_RED'" style="color: #ff0000">
+                                    Team Red
+                                </span>                       
+                            </div>
                         </div>
 
                         <div *ngIf="(isCodeMaster | async); else becomeCodemaster">

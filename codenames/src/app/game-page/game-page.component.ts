@@ -33,6 +33,7 @@ export class GamePageComponent implements OnInit {
   canClickCards: Observable<boolean>;
   canNotGiveClues: Observable<boolean>;
   user: Observable<User>;
+  winningTeam: any;
 
   redCardsLeft: any;
   blueCardsLeft: any;
@@ -101,6 +102,7 @@ export class GamePageComponent implements OnInit {
     this.redCardsLeft = this.db.object(`games/${this.gameId}/redCardsLeft`).valueChanges();
     this.blueCardsLeft = this.db.object(`games/${this.gameId}/blueCardsLeft`).valueChanges();
 
+    this.winningTeam = this.db.object(`games/${this.gameId}/winningTeam`).valueChanges().pipe(shareReplay(1));
   }
 
   ngOnInit(): void {
