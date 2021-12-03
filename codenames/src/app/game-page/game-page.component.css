@@ -1,0 +1,46 @@
+#game-container {
+	width:  100%;
+	height:  100%;
+}
+
+#side-panel {
+	width: 19.8%; 
+	float: left; 
+	height: 100vh; 
+	border-right: 2px solid gray;
+}
+
+#main-grid {
+	width: 80%;
+	float: right; 
+	height: 100vh; 
+	background-image: url('/assets/double-bubble-outline.png');
+}
+
+.space-above-20 {
+	margin-top: 20px;
+}
+
+.space-above-50 {
+	margin-top: 50px;
+}
+
+.space-left-20 { 
+	margin-left:  20px;
+}
+
+.space-below-20 {
+	margin-bottom:  20px;
+}
+
+.space-below-50 {
+	margin-bottom:  50px;
+}
+
+.team-red {
+	color: #ff0000;
+}
+
+.team-blue {
+	color: #0000ff;
+}
