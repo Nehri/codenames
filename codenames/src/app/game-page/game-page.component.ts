@@ -88,7 +88,8 @@ export class GamePageComponent implements OnInit {
       return playerArray;
     }));
     this.turnPhase = this.db.object(`games/${this.gameId}/currentTurn/phase`).valueChanges().pipe(shareReplay(1));
-    this.canClickCards = this.turnPhase.pipe(map(gamePhase => gamePhase === TurnPhase.GUESSING), shareReplay(1));
+    this.canClickCards = combineLatest([this.turnPhase, this.gameState]).pipe(
+      map(([gamePhase, gameState]) => gamePhase === TurnPhase.GUESSING && gameState !== GameState.ENDED), shareReplay(1));
     this.canNotGiveClues = this.turnPhase.pipe(map(gamePhase => gamePhase !== TurnPhase.CLUE_GIVING), shareReplay(1));
 
     this.guessesRemaining = this.db.object(`games/${this.gameId}/currentTurn/guessesRemaining`).valueChanges().pipe(shareReplay(1));
@@ -121,13 +122,14 @@ export class GamePageComponent implements OnInit {
   flipCard({row, col}, cards) {
     const cardToFlip = cards[row][col];
     combineLatest([this.db.object(`games/${this.gameId}/types/${row}/${col}`).valueChanges(), 
-                   this.db.object(`games/${this.gameId}/currentTurn/team`).valueChanges(),]).pipe(
+                   this.db.object(`games/${this.gameId}/currentTurn/team`).valueChanges(),
+                   this.db.object(`games/${this.gameId}/blueCardsLeft`).valueChanges(),
+                   this.db.object(`games/${this.gameId}/redCardsLeft`).valueChanges(),]).pipe(
       first()
-      ).subscribe(([cardType, team]) => {
+      ).subscribe(([cardType, team, blueCardsLeft, redCardsLeft]) => {
       if (cardToFlip && cardType && cardToFlip.type === CardType.UNKNOWN) {
         cards[row][col].type = cardType;
         this.db.object(`games/${this.gameId}`).update({cards});
-        this.getAndUpdateNumber(`games/${this.gameId}/currentTurn`, (guesses) => guesses -1, 'guessesRemaining');
         if (this.isMatchingTeamCard(cardType, team)) {
           let objectKey = '';
           if (team === Team.TEAM_BLUE) {
@@ -136,13 +138,17 @@ export class GamePageComponent implements OnInit {
             objectKey = 'redCardsLeft';
           }
           this.getAndUpdateNumber(`games/${this.gameId}/`, (cardsLeft) => cardsLeft -1, objectKey);
-        }
 
-        if (cardType === CardType.DEATH) {
+          if ((team === Team.TEAM_BLUE && blueCardsLeft === 1) || (team === Team.TEAM_RED && redCardsLeft === 1)) {
+            this.completeGame(team);
+          } else {
+            this.updateTeamAndPhase(cardType);
+          }
+        } else if (cardType === CardType.DEATH) {
            this.completeGame(this.getOppositeTurn(team as Team));
+        } else {
+          this.updateTeamAndPhase(cardType);
         }
-
-        this.updateTeamAndPhase(cardType);
       }
     });
   }
@@ -150,7 +156,7 @@ export class GamePageComponent implements OnInit {
   updateTeamAndPhase(cardType){
     this.getAndUpdateValue(`games/${this.gameId}/currentTurn`,(currentTurn) =>{
       let guessesRemaining = currentTurn['guessesRemaining'] as number;
-      //guessesRemaining--;
+      guessesRemaining--;
 
       let shouldChangeTeam = false;
       let team = currentTurn['team'];
