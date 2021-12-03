@@ -1,7 +1,7 @@
-<div>
+<div style="width: 100%">
     <ng-container *ngIf="(user | async) as user">
-        <div id="side-panel" style="width: 19%; float: left; height: 100vh; border-right: 2px solid gray">
-            <mat-card class="mat-elevation-z0" style="padding-left: 20px">
+        <div id="side-panel" style="width: 19.8%; float: left; height: 100vh; border-right: 2px solid gray">
+            <mat-card class="mat-elevation-z0" style="margin-left: 20px">
                 <mat-card-title>
                     {{gameId}}
                 </mat-card-title>
@@ -19,8 +19,22 @@
                         </span>
                     </div>
                     <div style="margin-top: 50px;" *ngIf="!(hideGameBoard | async)">
-                        <p>Team turn: {{teamTurn | async}}</p>
-                        <p>Turn phase: {{turnPhase | async}}</p>
+                        <p>
+                            It's 
+                            <span *ngIf="(teamTurn | async) === 'TEAM_BLUE'" style="color:  #0000ff">
+                                Team Blue's
+                            </span> 
+                            <span *ngIf="(teamTurn | async) === 'TEAM_RED'" style="color: #ff0000">
+                                Team Red's
+                            </span>
+                            turn to
+                            <span *ngIf="(turnPhase | async) === 'GUESSING'">
+                                guess
+                            </span>
+                            <span *ngIf="(turnPhase | async) === 'CLUE_GIVING'">
+                                give a clue
+                            </span>
+                        </p>
                         <p *ngIf="(guessesRemaining | async) > 0">Guesses remaining: {{guessesRemaining | async}}</p>
                         <div style="margin-bottom: 50px;">
                             <span><b>Clues: </b>
@@ -30,6 +44,15 @@
                                     </mat-chip>
                                 </mat-chip-list>
                             </span>
+                        </div>
+
+                        <div>
+                            <p>
+                                Team Red has {{redCardsLeft | async}} cards left to guess
+                            </p>
+                            <p>
+                                Team Blue has {{blueCardsLeft | async}} cards left to guess
+                            </p>
                         </div>
 
                         <div *ngIf="(isCodeMaster | async); else becomeCodemaster">
@@ -76,7 +99,7 @@
         </div>
 
         <div id="main-grid" style="width: 80%; float: right; height: 100vh; background-image: 'url(../assets/double-bubble-outline.png)'">
-            <div *ngIf="!(hideGameBoard | async)" style="padding-top: 20px">
+            <div *ngIf="!(hideGameBoard | async)" style="margin-top: 20px; margin-left: 20px">
                 <board  *ngIf="(cards | async) as cards" 
                   [cards]="cards" 
                   [clickingEnabled]="canClickCards | async"

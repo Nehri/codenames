@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Card, CardType, GameState, Team, TurnPhase, User } from '../types';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { first, switchMap, startWith, map, shareReplay} from 'rxjs/operators';
+import { first, switchMap, startWith, map, shareReplay } from 'rxjs/operators';
 import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
 import { FormBuilder } from '@angular/forms';
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -33,6 +33,9 @@ export class GamePageComponent implements OnInit {
   canClickCards: Observable<boolean>;
   canNotGiveClues: Observable<boolean>;
   user: Observable<User>;
+
+  redCardsLeft: any;
+  blueCardsLeft: any;
 
   readonly GameState = GameState;
 
@@ -93,6 +96,10 @@ export class GamePageComponent implements OnInit {
     this.isInGame = combineLatest([this.user, this.db.object(`games/${this.gameId}/players`).valueChanges()]).pipe(map(([user, players]) => {
       return !!players ? Object.keys(players).includes(user.uid ?? '') : false;
     }), shareReplay(1));
+
+    this.redCardsLeft = this.db.object(`games/${this.gameId}/redCardsLeft`).valueChanges();
+    this.blueCardsLeft = this.db.object(`games/${this.gameId}/blueCardsLeft`).valueChanges();
+
   }
 
   ngOnInit(): void {
@@ -202,5 +209,10 @@ export class GamePageComponent implements OnInit {
     const game = this.db.object(`games/${this.gameId}`);
     game.remove();
     this.router.navigate([`/games`]);
+  }
+
+  completeGame(winner: Team) {
+    const game = this.db.object(`games/${this.gameId}`);
+    game.update({gameState: GameState.ENDED, winningTeam: winner});
   }
 }

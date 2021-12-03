@@ -42,10 +42,12 @@ export class GameListComponent implements OnInit {
       types,
       gameState: GameState.CREATED,
       players,
+      redCardsLeft: firstTeam === Team.TEAM_RED ? 9 : 8,
+      blueCardsLeft: firstTeam === Team.TEAM_BLUE ? 9 : 8,
       currentTurn: {
         team: firstTeam,
         phase: TurnPhase.CLUE_GIVING,
-        guessesRemaining: 0
+        guessesRemaining: 0,
       },
     });
     this.router.navigate([`/games/${gameId}`]);
