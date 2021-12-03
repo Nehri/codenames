@@ -132,6 +132,12 @@ export class GamePageComponent implements OnInit {
       if (cardToFlip && cardType && cardToFlip.type === CardType.UNKNOWN) {
         cards[row][col].type = cardType;
         this.db.object(`games/${this.gameId}`).update({cards});
+
+        if (cardType === CardType.TEAM_BLUE) {
+           this.getAndUpdateNumber(`games/${this.gameId}/`, (cardsLeft) => cardsLeft -1, 'blueCardsLeft');
+        } else if (cardType === CardType.TEAM_RED) {
+           this.getAndUpdateNumber(`games/${this.gameId}/`, (cardsLeft) => cardsLeft -1, 'redCardsLeft');
+        }
         if (this.isMatchingTeamCard(cardType, team)) {
           let objectKey = '';
           if (team === Team.TEAM_BLUE) {
@@ -139,7 +145,7 @@ export class GamePageComponent implements OnInit {
           } else {
             objectKey = 'redCardsLeft';
           }
-          this.getAndUpdateNumber(`games/${this.gameId}/`, (cardsLeft) => cardsLeft -1, objectKey);
+         
 
           if ((team === Team.TEAM_BLUE && blueCardsLeft === 1) || (team === Team.TEAM_RED && redCardsLeft === 1)) {
             this.completeGame(team);
