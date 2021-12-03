@@ -2,9 +2,6 @@
     <ng-container *ngIf="(user | async) as user">
         <div id="side-panel" style="width: 19.8%; float: left; height: 100vh; border-right: 2px solid gray">
             <mat-card class="mat-elevation-z0" style="margin-left: 20px">
-                <mat-card-title>
-                    {{gameId}}
-                </mat-card-title>
                 <mat-card-content>
                     <div>
                         <span><b>Status:</b> {{gameState | async}}</span>

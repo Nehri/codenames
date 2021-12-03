@@ -1,7 +1,8 @@
 <div style="background-image: 'url(../assets/double-bubble-outline.png)'; height: 100%">
 	<ng-container *ngIf="(user | async) as user">
 		<div style="padding: 20px">
-			<button mat-raised-button color="primary" (click)="createNewGame(user)">
+			<button mat-raised-button color="primary" (click)="createNewGame(user)" 
+			  style="margin-left: 20px">
 				Create new game
 			</button>
 			<mat-list role="list" *ngIf="(gameList | async) as gameList">
