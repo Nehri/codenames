@@ -81,7 +81,7 @@
                                     <input  matInput id="number" type="number" formControlName="number">
                                   </div>
                             
-                                <button mat-raised-button color="primary" class="button" type="submit" class="space-above-20">Submit Clue</button>
+                                <button mat-raised-button color="primary" class="button" type="submit" class="space-above-20" [disabled]="canNotGiveClues | async">Submit Clue</button>
                               
                               </form>
                         </div>
