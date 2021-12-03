@@ -138,15 +138,7 @@ export class GamePageComponent implements OnInit {
         } else if (cardType === CardType.TEAM_RED) {
            this.getAndUpdateNumber(`games/${this.gameId}/`, (cardsLeft) => cardsLeft -1, 'redCardsLeft');
         }
-        if (this.isMatchingTeamCard(cardType, team)) {
-          let objectKey = '';
-          if (team === Team.TEAM_BLUE) {
-            objectKey = 'blueCardsLeft';
-          } else {
-            objectKey = 'redCardsLeft';
-          }
-         
-
+        if (this.isMatchingTeamCard(cardType, team)) {         
           if ((team === Team.TEAM_BLUE && blueCardsLeft === 1) || (team === Team.TEAM_RED && redCardsLeft === 1)) {
             this.completeGame(team);
           } else {
