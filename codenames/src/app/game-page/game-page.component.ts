@@ -120,13 +120,23 @@ export class GamePageComponent implements OnInit {
 
   flipCard({row, col}, cards) {
     const cardToFlip = cards[row][col];
-    this.db.object(`games/${this.gameId}/types/${row}/${col}`).valueChanges().pipe(
+    combineLatest([this.db.object(`games/${this.gameId}/types/${row}/${col}`).valueChanges(), 
+                   this.db.object(`games/${this.gameId}/currentTurn/team`).valueChanges(),]).pipe(
       first()
-      ).subscribe(cardType => {
+      ).subscribe(([cardType, team]) => {
       if (cardToFlip && cardType && cardToFlip.type === CardType.UNKNOWN) {
         cards[row][col].type = cardType;
         this.db.object(`games/${this.gameId}`).update({cards});
-        this.getAndUpdateValue(`games/${this.gameId}/currentTurn/guessesRemaining`, (guesses) => guesses -1);
+        this.getAndUpdateNumber(`games/${this.gameId}/currentTurn`, (guesses) => guesses -1, 'guessesRemaining');
+        if (this.isMatchingTeamCard(cardType, team)) {
+          let objectKey = '';
+          if (team === Team.TEAM_BLUE) {
+            objectKey = 'blueCardsLeft';
+          } else {
+            objectKey = 'redCardsLeft';
+          }
+          this.getAndUpdateNumber(`games/${this.gameId}/`, (cardsLeft) => cardsLeft -1, objectKey);
+        }
         this.updateTeamAndPhase(cardType);
       }
     });
@@ -135,7 +145,7 @@ export class GamePageComponent implements OnInit {
   updateTeamAndPhase(cardType){
     this.getAndUpdateValue(`games/${this.gameId}/currentTurn`,(currentTurn) =>{
       let guessesRemaining = currentTurn['guessesRemaining'] as number;
-      guessesRemaining--;
+      //guessesRemaining--;
 
       let shouldChangeTeam = false;
       let team = currentTurn['team'];
@@ -175,6 +185,17 @@ export class GamePageComponent implements OnInit {
         const anyVal = val as any;
         const newVal = updateFunction(anyVal);
         this.db.object(path).update(newVal);
+      }));
+  }
+
+  getAndUpdateNumber(path, updateFunction, objectKey){
+    this.db.object(path + '/' + objectKey).valueChanges().pipe(
+      first()).subscribe((val =>{
+        const anyVal = val as any;
+        const newVal = updateFunction(anyVal);
+        const newObject = {};
+        newObject[objectKey] = newVal;
+        this.db.object(path).update(newObject);
       }));
   }
 
